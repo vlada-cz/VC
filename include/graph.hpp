@@ -12,6 +12,8 @@ class Graph
     Graph(){}
     bool Load(std::string graphFilePath);
     void LoadFromStream(std::ifstream &graphStream);
+    std::vector<int> GetVertices() const { return vertices; }
+    std::vector<std::vector<int *>> GetAdjacents() const { return adjacents; }
     ~Graph(){}
   private:
     std::vector<int> vertices;

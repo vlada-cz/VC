@@ -3,6 +3,10 @@
 #include <string>
 
 #include "graph.hpp"
+#include "algorithms/dummy.hpp"
+#include "experiments/time.hpp"
+#include "experiments/space.hpp"
+#include "experiments/cover_size.hpp"
 
 using namespace std;
 
@@ -45,6 +49,15 @@ int main(int argc, char **argv)
 
   Graph graph;
   graph.Load(graphFilePath);
+
+  Dummy dummy;
+
+  Time timeExperiment;
+  CoverSize coverSizeExperiment;
+
+  timeExperiment.Run(100, dummy, graph);
+  coverSizeExperiment.Run(100, dummy, graph);
+
 
   /*
   if (param1.empty() || param2.empty())
