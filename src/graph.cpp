@@ -3,15 +3,44 @@
 using namespace std;
 
 
-void Graph::DeleteVertices(list<shared_ptr<size_t>>)
+void Graph::RemoveVertices(list<shared_ptr<size_t>> verticesToRemove)
 {
+  for (auto const& vertex : verticesToRemove)
+  {
+    this->RemoveVertex(*vertex);
+  }
+  return;
+}
+
+
+void Graph::RemoveVertex(size_t vertexToRemove)
+{
+  for (list<list<shared_ptr<size_t>>>::iterator adjacents = this->adjacencyList.begin();
+       adjacents != this->adjacencyList.end(); ++adjacents)
+  {
+    if (*(adjacents->front()) == vertexToRemove)
+    {
+      this->adjacencyList.erase(adjacents);
+    }
+    else
+    {
+      for (list<shared_ptr<size_t>>::iterator vertex = adjacents->begin();
+           vertex != adjacents->end(); ++vertex)
+      {
+        if (**vertex == vertexToRemove)
+        {
+          adjacents->erase(vertex);
+        }
+      }
+    }
+  }
   return;
 }
 
 
 list<shared_ptr<size_t>> Graph::GetAdjacents(size_t vertex)
 {
-  for (auto const& adjacents : adjacencyList)
+  for (auto const& adjacents : this->adjacencyList)
   {
     if (*adjacents.front() == vertex)
     {
@@ -29,7 +58,7 @@ size_t Graph::GetMinDegreeVertex()
   size_t vertex;
   size_t minDegree;
   bool firstIteration = true;
-  for (auto const& adjacents : adjacencyList)
+  for (auto const& adjacents : this->adjacencyList)
   {
     if (firstIteration)
     {
@@ -55,7 +84,7 @@ size_t Graph::GetMaxDegreeVertex()
 {
   size_t vertex = 0;
   size_t maxDegree = 0;
-  for (auto const& adjacents : adjacencyList)
+  for (auto const& adjacents : this->adjacencyList)
   {
     size_t currentMaxDegree = adjacents.size() - 1;
     if (currentMaxDegree > maxDegree)
@@ -72,7 +101,7 @@ size_t Graph::GetMaxDegreeVertex()
 //list.size() take O(n) so this should be faster
 bool Graph::HaveEdges()
 {
-  for (auto const& adjacents : adjacencyList)
+  for (auto const& adjacents : this->adjacencyList)
   {
     size_t i = 0;
     for (auto const& vertex : adjacents)

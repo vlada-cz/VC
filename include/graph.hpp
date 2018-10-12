@@ -19,7 +19,8 @@ class Graph
     size_t GetMinDegreeVertex();
     size_t GetMaxDegreeVertex();
     std::list<std::shared_ptr<size_t>> GetAdjacents(size_t vertex);
-    void DeleteVertices(std::list<std::shared_ptr<size_t>>);
+    void RemoveVertices(std::list<std::shared_ptr<size_t>> verticesToRemove);
+    void RemoveVertex(size_t vertexToRemove);
     ~Graph(){}
   private:
     std::list<std::list<std::shared_ptr<size_t>>> adjacencyList;

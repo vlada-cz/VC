@@ -50,6 +50,8 @@ int main(int argc, char **argv)
   Graph graph;
   graph.Load(graphFilePath);
 
+  graph.RemoveVertices(graph.GetAdjacents(graph.GetMaxDegreeVertex()))
+
   Dummy dummy;
 
   Time timeExperiment;
