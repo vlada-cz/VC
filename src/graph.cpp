@@ -3,64 +3,85 @@
 using namespace std;
 
 
-void Graph::DeleteVertexes(vector<shared_ptr<size_t>>)
+void Graph::DeleteVertices(list<shared_ptr<size_t>>)
 {
   return;
 }
 
 
-vector<shared_ptr<size_t>> Graph::GetNeighbours(size_t vertex)
+list<shared_ptr<size_t>> Graph::GetAdjacents(size_t vertex)
 {
-  if (vertex < this->adjacents.size())
+  for (auto const& adjacents : adjacencyList)
   {
-    return this->adjacents[vertex];
-  }
-  else
-  {
-    cerr << "Vertex is not in the graph." << endl;
-    vector<shared_ptr<size_t>> neighbours;
-    return neighbours;
-  }
-}
-
-
-size_t Graph::GetMinDegree()
-{
-  size_t minDegree = this->adjacents[0].size();
-  for (size_t i = 1; i < this->adjacents.size(); ++i)
-  {
-    size_t currentMinDegree = this->adjacents[i].size();
-    if (currentMinDegree < minDegree)
+    if (*adjacents.front() == vertex)
     {
-      minDegree = currentMinDegree;
+      return adjacents;
     }
   }
-  return minDegree;
+  cerr << "Vertex is not in the graph." << endl;
+  list<shared_ptr<size_t>> adjacents;
+  return adjacents;
 }
 
 
-size_t Graph::GetMaxDegree()
+size_t Graph::GetMinDegreeVertex()
 {
-  size_t maxDegree = 0;
-  for (size_t i = 0; i < this->adjacents.size(); ++i)
+  size_t vertex;
+  size_t minDegree;
+  bool firstIteration = true;
+  for (auto const& adjacents : adjacencyList)
   {
-    size_t currentMaxDegree = this->adjacents[i].size();
+    if (firstIteration)
+    {
+      firstIteration = false;
+      vertex = *adjacents.front();
+      minDegree = adjacents.size() - 1;
+    }
+    else
+    {
+      size_t currentMinDegree = adjacents.size() - 1;
+      if (currentMinDegree < minDegree)
+      {
+        vertex = *adjacents.front();
+        minDegree = currentMinDegree;
+      }
+    }
+  }
+  return vertex;
+}
+
+
+size_t Graph::GetMaxDegreeVertex()
+{
+  size_t vertex = 0;
+  size_t maxDegree = 0;
+  for (auto const& adjacents : adjacencyList)
+  {
+    size_t currentMaxDegree = adjacents.size() - 1;
     if (currentMaxDegree > maxDegree)
     {
+      vertex = *adjacents.front();
       maxDegree = currentMaxDegree;
     }
   }
-  return maxDegree;
+  return vertex;
 }
 
 
+//If any adjacents is bigger than 2 than the graph have at least one edge
+//list.size() take O(n) so this should be faster
 bool Graph::HaveEdges()
 {
-  for (size_t i = 0; i < this->adjacents.size(); ++i)
+  for (auto const& adjacents : adjacencyList)
   {
-    if (not this->adjacents[i].empty())
+    size_t i = 0;
+    for (auto const& vertex : adjacents)
     {
-      return true;
+      ++i;
+      if (i > 1)
+      {
+        return true;
+      }
     }
   }
   return false;
@@ -84,6 +105,7 @@ bool Graph::Load(string graphFilePath)
   }
 }
 
+
 void Graph::LoadFromStream(ifstream &graphStream)
 {
   string sink;
@@ -95,11 +117,11 @@ void Graph::LoadFromStream(ifstream &graphStream)
   size_t numberOfVertices;
   graphStream >> numberOfVertices;
   graphStream >> sink;
+  vector<shared_ptr<size_t>> vertices;
   for (size_t i = 0; i < numberOfVertices; ++i)
   {
-    this->vertices.push_back(shared_ptr<size_t>(new size_t(i)));
+    vertices.push_back(shared_ptr<size_t>(new size_t(i)));
   }
-  this->adjacents = vector<vector<shared_ptr<size_t>>>(numberOfVertices);
   size_t i = 0;
   string adjacentsString;
   while (getline(graphStream, adjacentsString))
@@ -107,10 +129,12 @@ void Graph::LoadFromStream(ifstream &graphStream)
     cout << i << " -> ";
     stringstream adjacentsStream(adjacentsString);
     size_t adjacent;
+    this->adjacencyList.push_back(list<shared_ptr<size_t>>());
+    this->adjacencyList.back().push_back(vertices[i]);
     while(adjacentsStream >> adjacent)
     {
       cout << adjacent << " ";
-      this->adjacents[i].push_back(this->vertices[i]);
+      this->adjacencyList.back().push_back(vertices[i]);
     }
     cout << endl;
     ++i;

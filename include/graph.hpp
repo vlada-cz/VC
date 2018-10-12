@@ -1,6 +1,7 @@
 #ifndef GRAPH_HPP
 #define GRAPH_HPP
 
+#include <list>
 #include <vector>
 #include <iostream>
 #include <fstream>
@@ -13,17 +14,15 @@ class Graph
     Graph(){}
     bool Load(std::string graphFilePath);
     void LoadFromStream(std::ifstream &graphStream);
-    std::vector<std::shared_ptr<size_t>> GetVertices() const { return vertices; }
-    std::vector<std::vector<std::shared_ptr<size_t>>> GetAdjacents() const { return adjacents; }
+    std::list<std::list<std::shared_ptr<size_t>>> GetAdjacencyList() const { return adjacencyList; }
     bool HaveEdges();
-    size_t GetMinDegree();
-    size_t GetMaxDegree();
-    std::vector<std::shared_ptr<size_t>> GetNeighbours(size_t vertex);
-    void DeleteVertexes(std::vector<std::shared_ptr<size_t>>);
+    size_t GetMinDegreeVertex();
+    size_t GetMaxDegreeVertex();
+    std::list<std::shared_ptr<size_t>> GetAdjacents(size_t vertex);
+    void DeleteVertices(std::list<std::shared_ptr<size_t>>);
     ~Graph(){}
   private:
-    std::vector<std::shared_ptr<size_t>> vertices;
-    std::vector<std::vector<std::shared_ptr<size_t>>> adjacents;
+    std::list<std::list<std::shared_ptr<size_t>>> adjacencyList;
 };
 
 #endif
