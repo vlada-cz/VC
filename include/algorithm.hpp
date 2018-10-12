@@ -7,7 +7,7 @@ class Algorithm
 {
   public:
     Algorithm(){}
-    std::vector<int> virtual Run(Graph graph){}
+    std::vector<size_t> virtual Run(Graph graph){}
     virtual ~Algorithm(){}
 };
 

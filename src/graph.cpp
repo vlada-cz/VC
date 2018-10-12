@@ -2,6 +2,71 @@
 
 using namespace std;
 
+
+void Graph::DeleteVertexes(vector<size_t *>)
+{
+  return;
+}
+
+
+vector<size_t *> Graph::GetNeighbours(size_t vertex)
+{
+  vector<size_t *> neighbours;
+  if (vertex < this->adjacents.size())
+  {
+    return this->adjacents[vertex];
+  }
+  else
+  {
+    cerr << "Vertex is not in the graph." << endl;
+    return neighbours;
+  }
+}
+
+
+size_t Graph::GetMinDegree()
+{
+  size_t minDegree = this->adjacents[0].size();
+  for (size_t i = 1; i < this->adjacents.size(); ++i)
+  {
+    size_t currentMinDegree = this->adjacents[i].size();
+    if (currentMinDegree < minDegree)
+    {
+      minDegree = currentMinDegree;
+    }
+  }
+  return minDegree;
+}
+
+
+size_t Graph::GetMaxDegree()
+{
+  size_t maxDegree = 0;
+  for (size_t i = 0; i < this->adjacents.size(); ++i)
+  {
+    size_t currentMaxDegree = this->adjacents[i].size();
+    if (currentMaxDegree > maxDegree)
+    {
+      maxDegree = currentMaxDegree;
+    }
+  }
+  return maxDegree;
+}
+
+
+bool Graph::HaveEdges()
+{
+  for (size_t i = 0; i < this->adjacents.size(); ++i)
+  {
+    if (not this->adjacents[i].empty())
+    {
+      return true;
+    }
+  }
+  return false;
+}
+
+
 bool Graph::Load(string graphFilePath)
 {
   cout << "Loading graph..." << endl;
@@ -27,21 +92,21 @@ void Graph::LoadFromStream(ifstream &graphStream)
   graphStream >> graphName;
   cout << "Graph: " << graphName << endl;
   cout << "#############################################################" << endl;
-  int numberOfVertices;
+  size_t numberOfVertices;
   graphStream >> numberOfVertices;
   graphStream >> sink;
-  for (int i = 0; i < numberOfVertices; ++i)
+  for (size_t i = 0; i < numberOfVertices; ++i)
   {
     this->vertices.push_back(i);
   }
-  this->adjacents = vector<vector<int *>>(numberOfVertices);
-  int i = 0;
+  this->adjacents = vector<vector<size_t *>>(numberOfVertices);
+  size_t i = 0;
   string adjacentsString;
   while (getline(graphStream, adjacentsString))
   {
     cout << i << " -> ";
     stringstream adjacentsStream(adjacentsString);
-    int adjacent;
+    size_t adjacent;
     while(adjacentsStream >> adjacent)
     {
       cout << adjacent << " ";

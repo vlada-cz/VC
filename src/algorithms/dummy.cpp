@@ -2,7 +2,7 @@
 
 using namespace std;
 
-vector<int> Dummy::Run(Graph graph)
+vector<size_t> Dummy::Run(Graph graph)
 {
   return graph.GetVertices();
 }

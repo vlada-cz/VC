@@ -7,7 +7,7 @@ class Dummy : public Algorithm
 {
   public:
     Dummy() : Algorithm(){}
-    std::vector<int> Run(Graph graph);
+    std::vector<size_t> Run(Graph graph);
 };
 
 #endif

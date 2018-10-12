@@ -2,8 +2,6 @@ cmake_minimum_required(VERSION 2.8.7)
 
 project(VC)
 
-find_package( OpenCV REQUIRED )
-
 set(VC_INCLUDE_DIR ${PROJECT_SOURCE_DIR}/include)
 set(VC_SRC_DIR ${PROJECT_SOURCE_DIR}/src)
 
