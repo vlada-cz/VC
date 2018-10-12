@@ -3,15 +3,14 @@
 using namespace std;
 
 
-void Graph::DeleteVertexes(vector<size_t *>)
+void Graph::DeleteVertexes(vector<shared_ptr<size_t>>)
 {
   return;
 }
 
 
-vector<size_t *> Graph::GetNeighbours(size_t vertex)
+vector<shared_ptr<size_t>> Graph::GetNeighbours(size_t vertex)
 {
-  vector<size_t *> neighbours;
   if (vertex < this->adjacents.size())
   {
     return this->adjacents[vertex];
@@ -19,6 +18,7 @@ vector<size_t *> Graph::GetNeighbours(size_t vertex)
   else
   {
     cerr << "Vertex is not in the graph." << endl;
+    vector<shared_ptr<size_t>> neighbours;
     return neighbours;
   }
 }
@@ -97,9 +97,9 @@ void Graph::LoadFromStream(ifstream &graphStream)
   graphStream >> sink;
   for (size_t i = 0; i < numberOfVertices; ++i)
   {
-    this->vertices.push_back(i);
+    this->vertices.push_back(shared_ptr<size_t>(new size_t(i)));
   }
-  this->adjacents = vector<vector<size_t *>>(numberOfVertices);
+  this->adjacents = vector<vector<shared_ptr<size_t>>>(numberOfVertices);
   size_t i = 0;
   string adjacentsString;
   while (getline(graphStream, adjacentsString))
@@ -110,7 +110,7 @@ void Graph::LoadFromStream(ifstream &graphStream)
     while(adjacentsStream >> adjacent)
     {
       cout << adjacent << " ";
-      this->adjacents[i].push_back(&this->vertices[i]);
+      this->adjacents[i].push_back(this->vertices[i]);
     }
     cout << endl;
     ++i;

@@ -5,6 +5,7 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <memory>
 
 class Graph
 {
@@ -12,17 +13,17 @@ class Graph
     Graph(){}
     bool Load(std::string graphFilePath);
     void LoadFromStream(std::ifstream &graphStream);
-    std::vector<size_t> GetVertices() const { return vertices; }
-    std::vector<std::vector<size_t *>> GetAdjacents() const { return adjacents; }
+    std::vector<std::shared_ptr<size_t>> GetVertices() const { return vertices; }
+    std::vector<std::vector<std::shared_ptr<size_t>>> GetAdjacents() const { return adjacents; }
     bool HaveEdges();
     size_t GetMinDegree();
     size_t GetMaxDegree();
-    std::vector<size_t *> GetNeighbours(size_t vertex);
-    void DeleteVertexes(std::vector<size_t *>);
+    std::vector<std::shared_ptr<size_t>> GetNeighbours(size_t vertex);
+    void DeleteVertexes(std::vector<std::shared_ptr<size_t>>);
     ~Graph(){}
   private:
-    std::vector<size_t> vertices;
-    std::vector<std::vector<size_t *>> adjacents;
+    std::vector<std::shared_ptr<size_t>> vertices;
+    std::vector<std::vector<std::shared_ptr<size_t>>> adjacents;
 };
 
 #endif

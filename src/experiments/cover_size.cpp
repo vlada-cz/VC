@@ -8,7 +8,7 @@ void CoverSize::Run(int numberOfInterations, Algorithm &algorithm, Graph &graph)
   int sum = 0;
   for (int i = 0; i < numberOfInterations; ++i)
   {
-    vector<size_t> vertices = algorithm.Run(graph);
+    vector<shared_ptr<size_t>> vertices = algorithm.Run(graph);
     coverSizes[i] = vertices.size();
     sum += vertices.size();
   }
