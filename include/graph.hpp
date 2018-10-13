@@ -8,12 +8,14 @@
 #include <sstream>
 #include <memory>
 
+
 class Graph
 {
   public:
     Graph(){}
     bool Load(std::string graphFilePath);
     void LoadFromStream(std::ifstream &graphStream);
+    void Print();
     std::list<std::list<std::shared_ptr<size_t>>> GetAdjacencyList() const { return adjacencyList; }
     bool HaveEdges();
     size_t GetMinDegreeVertex();
@@ -23,6 +25,7 @@ class Graph
     void RemoveVertex(size_t vertexToRemove);
     ~Graph(){}
   private:
+    std::string name;
     std::list<std::list<std::shared_ptr<size_t>>> adjacencyList;
 };
 

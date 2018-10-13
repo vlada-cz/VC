@@ -50,7 +50,22 @@ int main(int argc, char **argv)
   Graph graph;
   graph.Load(graphFilePath);
 
-  graph.RemoveVertices(graph.GetAdjacents(graph.GetMaxDegreeVertex()))
+  size_t maxDegreeVertex = graph.GetMinDegreeVertex();
+  cout << maxDegreeVertex << endl;
+
+  list<shared_ptr<size_t>> adjacents = graph.GetAdjacents(maxDegreeVertex);
+  for (auto const& vertex : adjacents)
+  {
+    cout << *vertex << " ";
+  }
+  cout << endl;
+
+  graph.RemoveVertices(adjacents);
+
+  graph.Print();
+
+  cout << endl;
+  cout << endl;
 
   Dummy dummy;
 

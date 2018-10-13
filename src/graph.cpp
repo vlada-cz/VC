@@ -15,23 +15,28 @@ void Graph::RemoveVertices(list<shared_ptr<size_t>> verticesToRemove)
 
 void Graph::RemoveVertex(size_t vertexToRemove)
 {
-  for (list<list<shared_ptr<size_t>>>::iterator adjacents = this->adjacencyList.begin();
-       adjacents != this->adjacencyList.end(); ++adjacents)
+  list<list<shared_ptr<size_t>>>::iterator adjacentsIterator = this->adjacencyList.begin();
+  while(adjacentsIterator != this->adjacencyList.end())
   {
-    if (*(adjacents->front()) == vertexToRemove)
+    if (*(adjacentsIterator->front()) == vertexToRemove)
     {
-      this->adjacencyList.erase(adjacents);
+      this->adjacencyList.erase(adjacentsIterator++);
     }
     else
     {
-      for (list<shared_ptr<size_t>>::iterator vertex = adjacents->begin();
-           vertex != adjacents->end(); ++vertex)
+      list<shared_ptr<size_t>>::iterator vertexIterator = adjacentsIterator->begin();
+      while (vertexIterator != adjacentsIterator->end())
       {
-        if (**vertex == vertexToRemove)
+        if (**vertexIterator == vertexToRemove)
         {
-          adjacents->erase(vertex);
+          adjacentsIterator->erase(vertexIterator++);
+        }
+        else
+        {
+          ++vertexIterator;
         }
       }
+      ++adjacentsIterator;
     }
   }
   return;
@@ -117,6 +122,28 @@ bool Graph::HaveEdges()
 }
 
 
+void Graph::Print()
+{
+  cout << "Graph: " << this->name << endl;
+  cout << "#############################################################" << endl;
+  for (auto const& adjacents : this->adjacencyList)
+  {
+    bool firstIteration = true;
+    for (auto const& vertex : adjacents)
+    {
+      cout << *vertex << " ";
+      if (firstIteration)
+      {
+        firstIteration = false;
+        cout << "-> ";
+      }
+    }
+    cout << endl;
+  }
+  cout << "#############################################################" << endl;
+}
+
+
 bool Graph::Load(string graphFilePath)
 {
   cout << "Loading graph..." << endl;
@@ -141,11 +168,12 @@ void Graph::LoadFromStream(ifstream &graphStream)
   cout << endl;
   string graphName;
   graphStream >> graphName;
+  this->name = graphName;
   cout << "Graph: " << graphName << endl;
   cout << "#############################################################" << endl;
   size_t numberOfVertices;
   graphStream >> numberOfVertices;
-  graphStream >> sink;
+  getline(graphStream, sink);
   vector<shared_ptr<size_t>> vertices;
   for (size_t i = 0; i < numberOfVertices; ++i)
   {
@@ -163,7 +191,7 @@ void Graph::LoadFromStream(ifstream &graphStream)
     while(adjacentsStream >> adjacent)
     {
       cout << adjacent << " ";
-      this->adjacencyList.back().push_back(vertices[i]);
+      this->adjacencyList.back().push_back(vertices[adjacent]);
     }
     cout << endl;
     ++i;
