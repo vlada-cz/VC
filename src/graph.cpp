@@ -3,31 +3,31 @@
 using namespace std;
 
 
-void Graph::RemoveVertices(list<shared_ptr<size_t>> verticesToRemove)
+void Graph::RemoveVertices(list<int> verticesToRemove)
 {
   for (auto const& vertex : verticesToRemove)
   {
-    this->RemoveVertex(*vertex);
+    this->RemoveVertex(vertex);
   }
   return;
 }
 
 
-void Graph::RemoveVertex(size_t vertexToRemove)
+void Graph::RemoveVertex(int vertexToRemove)
 {
-  list<list<shared_ptr<size_t>>>::iterator adjacentsIterator = this->adjacencyList.begin();
+  list<list<int>>::iterator adjacentsIterator = this->adjacencyList.begin();
   while(adjacentsIterator != this->adjacencyList.end())
   {
-    if (*(adjacentsIterator->front()) == vertexToRemove)
+    if (adjacentsIterator->front() == vertexToRemove)
     {
       this->adjacencyList.erase(adjacentsIterator++);
     }
     else
     {
-      list<shared_ptr<size_t>>::iterator vertexIterator = adjacentsIterator->begin();
+      list<int>::iterator vertexIterator = adjacentsIterator->begin();
       while (vertexIterator != adjacentsIterator->end())
       {
-        if (**vertexIterator == vertexToRemove)
+        if (*vertexIterator == vertexToRemove)
         {
           adjacentsIterator->erase(vertexIterator++);
         }
@@ -43,24 +43,68 @@ void Graph::RemoveVertex(size_t vertexToRemove)
 }
 
 
-list<shared_ptr<size_t>> Graph::GetAdjacents(size_t vertex)
+list<int> Graph::GetAdjacents(int vertex)
 {
   for (auto const& adjacents : this->adjacencyList)
   {
-    if (*adjacents.front() == vertex)
+    if (adjacents.front() == vertex)
     {
       return adjacents;
     }
   }
   cerr << "Vertex is not in the graph." << endl;
-  list<shared_ptr<size_t>> adjacents;
+  list<int> adjacents;
   return adjacents;
 }
 
 
-size_t Graph::GetMinDegreeVertex()
+int Graph::GetNonZeroMinDegreeVertex()
 {
-  size_t vertex;
+  int vertex = -1;
+  size_t minDegree;
+  bool firstNotSet = true;
+  for (auto const& adjacents : this->adjacencyList)
+  {
+    size_t currentMinDegree = adjacents.size() - 1;
+    if (currentMinDegree > 0)
+    {
+      if (firstNotSet)
+      {
+        firstNotSet = false;
+        vertex = adjacents.front();
+        minDegree = currentMinDegree;
+      }
+      else
+      {
+        if (currentMinDegree < minDegree)
+        {
+          vertex = adjacents.front();
+          minDegree = currentMinDegree;
+        }
+      }
+    }
+  }
+  return vertex;
+}
+
+
+int Graph::GetNonZeroMaxDegreeVertex()
+{
+  pair<int, int> result = this->GetMaxDegreeVertexImpl();
+  if (result.second > 0)
+  {
+    return result.first;
+  }
+  else
+  {
+    return -1;
+  }
+}
+
+
+int Graph::GetMinDegreeVertex()
+{
+  int vertex = -1;
   size_t minDegree;
   bool firstIteration = true;
   for (auto const& adjacents : this->adjacencyList)
@@ -68,7 +112,7 @@ size_t Graph::GetMinDegreeVertex()
     if (firstIteration)
     {
       firstIteration = false;
-      vertex = *adjacents.front();
+      vertex = adjacents.front();
       minDegree = adjacents.size() - 1;
     }
     else
@@ -76,7 +120,7 @@ size_t Graph::GetMinDegreeVertex()
       size_t currentMinDegree = adjacents.size() - 1;
       if (currentMinDegree < minDegree)
       {
-        vertex = *adjacents.front();
+        vertex = adjacents.front();
         minDegree = currentMinDegree;
       }
     }
@@ -85,20 +129,26 @@ size_t Graph::GetMinDegreeVertex()
 }
 
 
-size_t Graph::GetMaxDegreeVertex()
+int Graph::GetMaxDegreeVertex()
 {
-  size_t vertex = 0;
+  pair<int, int> result = this->GetMaxDegreeVertexImpl();
+  return result.first;
+}
+
+pair<int, int> Graph::GetMaxDegreeVertexImpl()
+{
+  int vertex = -1;
   size_t maxDegree = 0;
   for (auto const& adjacents : this->adjacencyList)
   {
     size_t currentMaxDegree = adjacents.size() - 1;
     if (currentMaxDegree > maxDegree)
     {
-      vertex = *adjacents.front();
+      vertex = adjacents.front();
       maxDegree = currentMaxDegree;
     }
   }
-  return vertex;
+  return make_pair(vertex, maxDegree);
 }
 
 
@@ -108,7 +158,7 @@ bool Graph::HaveEdges()
 {
   for (auto const& adjacents : this->adjacencyList)
   {
-    size_t i = 0;
+    int i = 0;
     for (auto const& vertex : adjacents)
     {
       ++i;
@@ -131,7 +181,7 @@ void Graph::Print()
     bool firstIteration = true;
     for (auto const& vertex : adjacents)
     {
-      cout << *vertex << " ";
+      cout << vertex << " ";
       if (firstIteration)
       {
         firstIteration = false;
@@ -171,27 +221,22 @@ void Graph::LoadFromStream(ifstream &graphStream)
   this->name = graphName;
   cout << "Graph: " << graphName << endl;
   cout << "#############################################################" << endl;
-  size_t numberOfVertices;
+  int numberOfVertices;
   graphStream >> numberOfVertices;
   getline(graphStream, sink);
-  vector<shared_ptr<size_t>> vertices;
-  for (size_t i = 0; i < numberOfVertices; ++i)
-  {
-    vertices.push_back(shared_ptr<size_t>(new size_t(i)));
-  }
-  size_t i = 0;
+  int i = 0;
   string adjacentsString;
   while (getline(graphStream, adjacentsString))
   {
     cout << i << " -> ";
     stringstream adjacentsStream(adjacentsString);
-    size_t adjacent;
-    this->adjacencyList.push_back(list<shared_ptr<size_t>>());
-    this->adjacencyList.back().push_back(vertices[i]);
+    int adjacent;
+    this->adjacencyList.push_back(list<int>());
+    this->adjacencyList.back().push_back(i);
     while(adjacentsStream >> adjacent)
     {
       cout << adjacent << " ";
-      this->adjacencyList.back().push_back(vertices[adjacent]);
+      this->adjacencyList.back().push_back(adjacent);
     }
     cout << endl;
     ++i;

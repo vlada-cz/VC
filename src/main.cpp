@@ -4,6 +4,7 @@
 
 #include "graph.hpp"
 #include "algorithms/dummy.hpp"
+#include "algorithms/GIC.hpp"
 #include "experiments/time.hpp"
 #include "experiments/space.hpp"
 #include "experiments/cover_size.hpp"
@@ -50,31 +51,41 @@ int main(int argc, char **argv)
   Graph graph;
   graph.Load(graphFilePath);
 
-  size_t maxDegreeVertex = graph.GetMinDegreeVertex();
+  Graph graph2 = graph;
+
+  int maxDegreeVertex = graph.GetMinDegreeVertex();
   cout << maxDegreeVertex << endl;
 
-  list<shared_ptr<size_t>> adjacents = graph.GetAdjacents(maxDegreeVertex);
+  list<int> adjacents = graph.GetAdjacents(maxDegreeVertex);
   for (auto const& vertex : adjacents)
   {
-    cout << *vertex << " ";
+    cout << vertex << " ";
   }
   cout << endl;
 
   graph.RemoveVertices(adjacents);
 
   graph.Print();
+  graph2.Print();
 
   cout << endl;
   cout << endl;
 
   Dummy dummy;
+  GIC gic;
 
   Time timeExperiment;
   CoverSize coverSizeExperiment;
 
+  cout << "Dummy" << endl;
   timeExperiment.Run(100, dummy, graph);
   coverSizeExperiment.Run(100, dummy, graph);
+  cout << endl;
 
+  cout << "GCI" << endl;
+  timeExperiment.Run(100, gic, graph);
+  coverSizeExperiment.Run(100, gic, graph);
+  cout << endl;
 
   /*
   if (param1.empty() || param2.empty())

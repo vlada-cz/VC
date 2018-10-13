@@ -7,6 +7,7 @@
 #include <fstream>
 #include <sstream>
 #include <memory>
+#include <utility>
 
 
 class Graph
@@ -16,17 +17,20 @@ class Graph
     bool Load(std::string graphFilePath);
     void LoadFromStream(std::ifstream &graphStream);
     void Print();
-    std::list<std::list<std::shared_ptr<size_t>>> GetAdjacencyList() const { return adjacencyList; }
+    std::list<std::list<int>> GetAdjacencyList() const { return adjacencyList; }
     bool HaveEdges();
-    size_t GetMinDegreeVertex();
-    size_t GetMaxDegreeVertex();
-    std::list<std::shared_ptr<size_t>> GetAdjacents(size_t vertex);
-    void RemoveVertices(std::list<std::shared_ptr<size_t>> verticesToRemove);
-    void RemoveVertex(size_t vertexToRemove);
+    int GetNonZeroMinDegreeVertex();
+    int GetNonZeroMaxDegreeVertex();
+    int GetMinDegreeVertex();
+    int GetMaxDegreeVertex();
+    std::pair<int, int> GetMaxDegreeVertexImpl();
+    std::list<int> GetAdjacents(int vertex);
+    void RemoveVertices(std::list<int> verticesToRemove);
+    void RemoveVertex(int vertexToRemove);
     ~Graph(){}
   private:
     std::string name;
-    std::list<std::list<std::shared_ptr<size_t>>> adjacencyList;
+    std::list<std::list<int>> adjacencyList;
 };
 
 #endif

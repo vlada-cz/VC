@@ -12,6 +12,7 @@ add_executable(vc
 	       ${VC_SRC_DIR}/main.cpp
 	       ${VC_SRC_DIR}/graph.cpp
 	       ${VC_SRC_DIR}/algorithms/dummy.cpp
+	       ${VC_SRC_DIR}/algorithms/GIC.cpp
 	       ${VC_SRC_DIR}/experiments/time.cpp
 	       ${VC_SRC_DIR}/experiments/space.cpp
 	       ${VC_SRC_DIR}/experiments/cover_size.cpp)

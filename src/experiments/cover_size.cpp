@@ -4,11 +4,11 @@ using namespace std;
 
 void CoverSize::Run(int numberOfInterations, Algorithm &algorithm, Graph &graph)
 {
-  vector<size_t> coverSizes(numberOfInterations);
+  vector<int> coverSizes(numberOfInterations);
   int sum = 0;
   for (int i = 0; i < numberOfInterations; ++i)
   {
-    vector<shared_ptr<size_t>> vertices = algorithm.Run(graph);
+    vector<int> vertices = algorithm.Run(graph);
     coverSizes[i] = vertices.size();
     sum += vertices.size();
   }
