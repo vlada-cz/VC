@@ -17,7 +17,7 @@ add_executable(vc
 	       ${VC_SRC_DIR}/experiments/space.cpp
 	       ${VC_SRC_DIR}/experiments/cover_size.cpp)
 
-add_executable(grephGen 
+add_executable(graphGen 
 	       ${VC_SRC_DIR}/graph_gen.cpp)
         
 set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -std=gnu++17 -Wall -Wextra -pedantic")
