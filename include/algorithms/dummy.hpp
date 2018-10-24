@@ -1,13 +1,13 @@
 #ifndef DUMMY_HPP
 #define DUMMY_HPP
 
-#include "algorithm.hpp"
+#include "algorithms.hpp"
 
-class Dummy : public Algorithm
+class Dummy : public Algorithms
 {
   public:
-    Dummy() : Algorithm(){}
-    std::vector<int> Run(Graph graph);
+    Dummy() : Algorithms(){}
+    std::vector<int> Run(Graph graph, bool removePendant, bool removeRedundant);
 };
 
 #endif

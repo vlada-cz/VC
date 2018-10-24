@@ -2,13 +2,13 @@
 #define EXPERIMENT_HPP
 
 #include "graph.hpp"
-#include "algorithm.hpp"
+#include "algorithms.hpp"
 #include <chrono>
 
 class Experiment
 {
   public:
-    void virtual Run(int numberOfInterations, Algorithm &algorithm, Graph &graph) = 0;
+    void virtual Run(int numberOfInterations, Algorithms &algorithm, Graph &graph, bool removePendant, bool removeRedundant) = 0;
     virtual ~Experiment(){}
 
   protected:

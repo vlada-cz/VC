@@ -2,7 +2,7 @@
 
 using namespace std;
 
-vector<int> Dummy::Run(Graph graph)
+vector<int> Dummy::Run(Graph graph, bool removePendant, bool removeRedundant)
 {
   vector<int> vertices;
   list<list<int>> adjacencyList = graph.GetAdjacencyList();
