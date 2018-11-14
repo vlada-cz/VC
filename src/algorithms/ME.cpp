@@ -10,7 +10,6 @@ vector<int> ME::Run(Graph graph, bool removePendant, bool removeRedundant)
     graph.Print();
     this->RemoveMaxEdge(graph);
   }
-  graph.Print();
   return this->cover;
 }
 

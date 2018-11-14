@@ -12,9 +12,9 @@ class Algorithms
     std::vector<int> virtual Run(Graph graph, bool removePendant, bool removeRedundant){}
     virtual ~Algorithms(){}
     std::vector<int> RemovePendantVertices(Graph &graph);
+    std::vector<int> RemoveRedundantVertices(Graph &graph, std::vector<int> cover);
 
   protected:
-    std::vector<int> RemoveRedundantVertices(Graph &graph, std::vector<int> cover);
     bool CheckAdjacentsInCover(Graph &graph, int vertex, std::list<int> coverList);
     void RemoveVertexFromCover(std::list<int> &coverList, int vertexToRemove);
 

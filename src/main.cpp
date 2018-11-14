@@ -70,13 +70,32 @@ int main(int argc, char **argv)
   Dummy dummy;
   GIC gic;
   ME me;
+  Graph origGraph = graph;
   vector<int> cover = me.RemovePendantVertices(graph);
+  cout << "pendant" << endl;
   for (auto const& vertex : cover)
   {
     cout << vertex << " ";
   }
   cout <<  endl;
-  graph.Print();
+  vector<int> coverME = me.Run(graph, false, false);
+  for (auto const& vertex : coverME)
+  {
+    cover.push_back(vertex);
+  }
+  cout << "ME cover" << endl;
+  for (auto const& vertex : cover)
+  {
+    cout << vertex << " ";
+  }
+  cout <<  endl;
+  cover = me.RemoveRedundantVertices(origGraph, cover);
+  cout << "New cover" << endl;
+  for (auto const& vertex : cover)
+  {
+    cout << vertex << " ";
+  }
+  cout <<  endl;
 
   /*
 
