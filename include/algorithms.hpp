@@ -1,5 +1,6 @@
-#ifndef ALGORITHM_HPP
-#define ALGORITHM_HPP
+#ifndef ALGORITHMS_HPP
+#define ALGORITHMS_HPP
+
 
 #include "graph.hpp"
 #include <set>
@@ -17,6 +18,7 @@ class Algorithms
   protected:
     bool CheckAdjacentsInCover(Graph &graph, int vertex, std::list<int> coverList);
     void RemoveVertexFromCover(std::list<int> &coverList, int vertexToRemove);
+    std::vector<int> cover;
 
 };
 

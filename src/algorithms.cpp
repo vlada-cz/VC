@@ -3,7 +3,7 @@
 using namespace std;
 
 /*
- * Find edges that have at least one vertex connected only to them
+ * Find vertices that have only one vertex connected to them
  * Remove the opposite vertices and return them
  * These vertices have to be in the minimal vertex cover
  */
@@ -13,22 +13,34 @@ vector<int> Algorithms::RemovePendantVertices(Graph &graph)
   list<list<int>> adjacencyList = graph.GetAdjacencyList();
   for (auto const& adjacents : adjacencyList)
   {
-    //Get vertices with single endge faster
+    //Get vertices with single edge faster
     int counter = 0;
+    int pendant_vertex;
     int opposite_vertex;
+    bool addVertexToCover = false;
     for (auto const& vertex : adjacents)
     {
       ++counter;
-      if (counter == 3)
+      if (counter == 1)
       {
-        break;
+        pendant_vertex = vertex;
+        if (cover_set.count(pendant_vertex) > 0)
+        {
+          break;
+        }
       }
-      else
+      if (counter == 2)
       {
+        addVertexToCover = true;
         opposite_vertex = vertex;
       }
+      if (counter == 3)
+      {
+        addVertexToCover = false;
+        break;
+      }
     }
-    if (counter == 2)
+    if (addVertexToCover)
     {
       cover_set.insert(opposite_vertex);
     }
