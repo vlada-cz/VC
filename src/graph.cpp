@@ -15,11 +15,13 @@ void Graph::RemoveVertices(list<int> verticesToRemove)
 
 void Graph::RemoveVertex(int vertexToRemove)
 {
+  bool vertexFound = false;
   list<list<int>>::iterator adjacentsIterator = this->adjacencyList.begin();
   while(adjacentsIterator != this->adjacencyList.end())
   {
     if (adjacentsIterator->front() == vertexToRemove)
     {
+      vertexFound = true;
       this->adjacencyList.erase(adjacentsIterator++);
     }
     else
@@ -29,6 +31,7 @@ void Graph::RemoveVertex(int vertexToRemove)
       {
         if (*vertexIterator == vertexToRemove)
         {
+          vertexFound = true;
           adjacentsIterator->erase(vertexIterator++);
         }
         else
@@ -38,6 +41,10 @@ void Graph::RemoveVertex(int vertexToRemove)
       }
       ++adjacentsIterator;
     }
+  }
+  if (!vertexFound)
+  {
+    cerr << "Vertex to remove " << vertexToRemove << " was not found." << endl;
   }
   return;
 }
@@ -52,7 +59,7 @@ list<int> Graph::GetAdjacents(int vertex)
       return adjacents;
     }
   }
-  cerr << "Vertex is not in the graph." << endl;
+  cerr << "Adjacents for vertex " << vertex << " are not in the graph." << endl;
   list<int> adjacents;
   return adjacents;
 }
@@ -98,7 +105,8 @@ size_t Graph::GetDegree(int vertex)
   }
   else
   {
-      return -1;
+    cerr << "Degree for vertex" << vertex << " doesnt exist." << endl;
+    return -1;
   }
 }
 
@@ -180,6 +188,7 @@ int Graph::GetMaxDegreeVertex()
   return result.first;
 }
 
+
 pair<int, int> Graph::GetMaxDegreeVertexImpl()
 {
   int vertex = -1;
@@ -241,8 +250,8 @@ void Graph::Print()
 
 bool Graph::Load(string graphFilePath)
 {
-  cout << "Loading graph..." << endl;
-  cout << "File path: " << graphFilePath << endl;
+  //cout << "Loading graph..." << endl;
+  //cout << "File path: " << graphFilePath << endl;
   ifstream graphStream(graphFilePath);
   if (graphStream.is_open())
   {
@@ -260,12 +269,12 @@ bool Graph::Load(string graphFilePath)
 void Graph::LoadFromStream(ifstream &graphStream)
 {
   string sink;
-  cout << endl;
+  //cout << endl;
   string graphName;
   graphStream >> graphName;
   this->name = graphName;
-  cout << "Graph: " << graphName << endl;
-  cout << "#############################################################" << endl;
+  //cout << "Graph: " << graphName << endl;
+  //cout << "#############################################################" << endl;
   int numberOfVertices;
   graphStream >> numberOfVertices;
   getline(graphStream, sink);
@@ -273,22 +282,22 @@ void Graph::LoadFromStream(ifstream &graphStream)
   string adjacentsString;
   while (getline(graphStream, adjacentsString))
   {
-    cout << i << " -> ";
+    //cout << i << " -> ";
     stringstream adjacentsStream(adjacentsString);
     int adjacent;
     this->adjacencyList.push_back(list<int>());
     this->adjacencyList.back().push_back(i);
     while(adjacentsStream >> adjacent)
     {
-      cout << adjacent << " ";
+      //cout << adjacent << " ";
       this->adjacencyList.back().push_back(adjacent);
     }
-    cout << endl;
+    //cout << endl;
     ++i;
   }
   graphStream.close();
-  cout << "#############################################################" << endl;
-  cout << endl;
-  cout << endl;
+  //cout << "#############################################################" << endl;
+  //cout << endl;
+  //cout << endl;
   return;
 }

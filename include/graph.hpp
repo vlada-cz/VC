@@ -1,6 +1,11 @@
 #ifndef GRAPH_HPP
 #define GRAPH_HPP
 
+/*
+ * Graph is represented as adjacency list
+ * This class allows basic manipulations with graph
+ */
+
 #include <list>
 #include <vector>
 #include <iostream>

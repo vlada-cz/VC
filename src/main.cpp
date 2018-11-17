@@ -6,10 +6,9 @@
 #include "algorithms.hpp"
 #include "algorithms/dummy.hpp"
 #include "algorithms/GIC.hpp"
+#include "algorithms/MDG.hpp"
 #include "algorithms/ME.hpp"
-#include "experiments/time.hpp"
-#include "experiments/space.hpp"
-#include "experiments/cover_size.hpp"
+#include "experiments/time_size.hpp"
 
 using namespace std;
 
@@ -17,29 +16,52 @@ int main(int argc, char **argv)
 {
   static struct option long_options[] = {
   {"graph", required_argument, 0, 'g'},
-  {"param2", required_argument, 0, 'd'},
+  {"method", required_argument, 0, 'm'},
+  {"iter", required_argument, 0, 'i'},
+  {"pendant", no_argument, 0, 'p'},
+  {"redundant", no_argument, 0, 'r'},
   {0, 0, 0, 0}};
 
   string graphFilePath;
-  string param2;
+  string outFileName;
+  string method;
+  int numberOfInterations = 1;
+  bool removePendant = false;
+  bool removeRedundant = false;
 
   cout << endl;
   cout << "Params" << endl;
   cout << "#############################################################" << endl;
   int option_index = 0;
   int opt = 0;
-  while ((opt = getopt_long(argc, argv, "g:d:", long_options, &option_index)) != -1)
+  while ((opt = getopt_long(argc, argv, "g:m:i:pr", long_options, &option_index)) != -1)
   {
     switch (opt)
     {
       case 'g':
         graphFilePath = optarg;
+        outFileName = graphFilePath + ".out";
         cout << "Graph file path: " << optarg << endl;
         break;
 
-      case 'd':
-        param2 = optarg;
-        cout << "Param 2: " << optarg << endl;
+      case 'm':
+        method = optarg;
+        cout << "Method: " << optarg << endl;
+        break;
+
+      case 'i':
+        numberOfInterations = stoi(optarg);
+        cout << "Number of iterations: " << optarg << endl;
+        break;
+
+      case 'p':
+        removePendant = true;
+        cout << "RemovePendantVertices set" << endl;
+        break;
+
+      case 'r':
+        removeRedundant = true;
+        cout << "RemoveRedundantVertices set" << endl;
         break;
 
       default:
@@ -47,84 +69,45 @@ int main(int argc, char **argv)
     }
   }
   cout << "#############################################################" << endl;
-  cout << endl;
-  cout << endl;
+  //cout << endl;
+  //cout << endl;
 
+  //Load graph and remember the original
   Graph graph;
   graph.Load(graphFilePath);
-  graph.CountDegrees();
-  int maxDegreeVertex = graph.GetMaxDegreeVertex();
-  cout << "MAX:" << graph.GetDegree(maxDegreeVertex) << endl;
-  int minDegreeVertex = graph.GetNonZeroMinDegreeVertex();
-  cout << "MIN:" << minDegreeVertex << endl;
-
-  vector<pair<int, int>> edges = graph.GetEdges();
-  for (auto const& edge : edges)
-  {
-    cout << "(" << edge.first << ", " << edge.second << ")" << endl;
-  }
-
-  cout << endl;
-
-
-  Dummy dummy;
-  GIC gic;
-  ME me;
   Graph origGraph = graph;
-  vector<int> cover = me.RemovePendantVertices(graph);
-  cout << "pendant" << endl;
-  for (auto const& vertex : cover)
+
+  TimeSize timeSizeExperiment;
+
+  pair<double, int> result;
+
+  if (!method.compare("GIC"))
   {
-    cout << vertex << " ";
+    GIC gic;
+    result = timeSizeExperiment.Run(numberOfInterations, gic, graph, removePendant, removeRedundant);
   }
-  cout <<  endl;
-  vector<int> coverME = me.Run(graph, false, false);
-  for (auto const& vertex : coverME)
+
+  if (!method.compare("MDG"))
   {
-    cover.push_back(vertex);
+    MDG mdg;
+    result = timeSizeExperiment.Run(numberOfInterations, mdg, graph, removePendant, removeRedundant);
   }
-  cout << "ME cover" << endl;
-  for (auto const& vertex : cover)
+
+  if (!method.compare("ME"))
   {
-    cout << vertex << " ";
+    ME me;
+    result = timeSizeExperiment.Run(numberOfInterations, me, graph, removePendant, removeRedundant);
   }
-  cout <<  endl;
-  cover = me.RemoveRedundantVertices(origGraph, cover);
-  cout << "New cover" << endl;
-  for (auto const& vertex : cover)
+
+  if (!method.compare("DUMMY"))
   {
-    cout << vertex << " ";
+    Dummy dummy;
+    result = timeSizeExperiment.Run(numberOfInterations, dummy, graph, removePendant, removeRedundant);
   }
-  cout <<  endl;
 
-  /*
-
-  Time timeExperiment;
-  CoverSize coverSizeExperiment;
-
-  cout << "Dummy" << endl;
-  timeExperiment.Run(100, dummy, graph, false, false);
-  coverSizeExperiment.Run(100, dummy, graph, false, false);
-  cout << endl;
-
-  cout << "GCI" << endl;
-  timeExperiment.Run(100, gic, graph, false, false);
-  coverSizeExperiment.Run(100, gic, graph, false, false);
-  cout << endl;
-
-  cout << "ME" << endl;
-  //timeExperiment.Run(1, me, graph);
-  coverSizeExperiment.Run(1, me, graph, false, false);
-  cout << endl;
-
-  */
-  /*
-  if (param1.empty() || param2.empty())
-  {
-    cout << "Params have to be set." << endl;
-    return -1;
-  }
-  */
+  ofstream outStream(outFileName);
+  outStream << result.first << " " << result.second;
+  outStream.close();
 
   return 0;
 }

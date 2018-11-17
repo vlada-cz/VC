@@ -14,10 +14,10 @@ add_executable(vc
 	       ${VC_SRC_DIR}/algorithms.cpp
 	       ${VC_SRC_DIR}/algorithms/dummy.cpp
 	       ${VC_SRC_DIR}/algorithms/GIC.cpp
+	       ${VC_SRC_DIR}/algorithms/MDG.cpp
 	       ${VC_SRC_DIR}/algorithms/ME.cpp
-	       ${VC_SRC_DIR}/experiments/time.cpp
-	       ${VC_SRC_DIR}/experiments/space.cpp
-	       ${VC_SRC_DIR}/experiments/cover_size.cpp)
+	       ${VC_SRC_DIR}/experiments.cpp
+	       ${VC_SRC_DIR}/experiments/time_size.cpp)
 
 add_executable(graphGen 
 	       ${VC_SRC_DIR}/graph_gen.cpp)

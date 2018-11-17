@@ -8,10 +8,10 @@ from tqdm import tqdm
 #-----------------------------------------------------------------------#
 
 #Density number defines number of density classes
-densityNum = 4
+densityNum = 10
 
 #List of vertices defines number of vertices in each density folder
-vertexList = [10, 50, 100, 200, 500, 1000]
+vertexList = [10, 50, 100, 200]
 
 #Graphs number defines number of graphs in one verex folder
 graphsNum = 1000

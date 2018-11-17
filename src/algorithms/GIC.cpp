@@ -5,6 +5,11 @@ using namespace std;
 vector<int> GIC::Run(Graph graph, bool removePendant, bool removeRedundant)
 {
   this->cover.clear();
+  Graph origGraph = graph;
+  if (removePendant)
+  {
+    this->cover = this->RemovePendantVertices(graph);
+  }
   while (graph.HaveEdges())
   {
     graph.CountDegrees();
@@ -16,6 +21,10 @@ vector<int> GIC::Run(Graph graph, bool removePendant, bool removeRedundant)
     list<int> adjacents = graph.GetAdjacents(minDegreeVertex);
     this->PushNeighboursToCover(adjacents);
     graph.RemoveVertices(adjacents);
+  }
+  if (removeRedundant)
+  {
+    this->cover = this->RemoveRedundantVertices(origGraph, this->cover);
   }
   return this->cover;
 }

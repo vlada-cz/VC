@@ -4,6 +4,7 @@
 /*
  * Greedy Independent Cover
  *
+ * Get vertex of minimum degree, remove its neighbours and add them to cover
  */
 
 #include "algorithms.hpp"
@@ -14,7 +15,6 @@ class GIC : public Algorithms
     GIC() : Algorithms(){}
     std::vector<int> Run(Graph graph, bool removePendant, bool removeRedundant);
     void PushNeighboursToCover(std::list<int> &adjacents);
-    std::vector<int> cover;
 };
 
 #endif

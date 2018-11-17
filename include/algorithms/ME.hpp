@@ -4,6 +4,8 @@
 /*
  * Max Edge
  *
+ * Get edge which vertices have total maximum degree, remove these vertices
+ * and add them to cover
  */
 
 #include "algorithms.hpp"
@@ -15,7 +17,6 @@ class ME : public Algorithms
     std::vector<int> Run(Graph graph, bool removePendant, bool removeRedundant);
     Graph RemoveMaxEdge(Graph &graph);
     std::pair<int, int> GetMaxEdge(Graph &graph);
-    std::vector<int> cover;
 };
 
 #endif
