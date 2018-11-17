@@ -58,27 +58,72 @@ list<int> Graph::GetAdjacents(int vertex)
 }
 
 
+vector<pair<int, int>> Graph::GetEdges()
+{
+  vector<pair<int, int>> edges;
+  for (auto const& adjacents : this->adjacencyList)
+  {
+    int first_vertex = adjacents.front();
+    list<int>::const_iterator vertexIterator = adjacents.begin();
+    ++vertexIterator;
+    while (vertexIterator != adjacents.end())
+    {
+      if (*vertexIterator >= first_vertex)
+      {
+        edges.push_back(make_pair(first_vertex, *vertexIterator));
+      }
+      ++vertexIterator;
+    }
+  }
+  return edges;
+}
+
+
+void Graph::CountDegrees()
+{
+  this->degrees.clear();
+  for (auto const& adjacents : this->adjacencyList)
+  {
+    this->degrees[adjacents.front()] = adjacents.size() - 1;
+  }
+}
+
+
+size_t Graph::GetDegree(int vertex)
+{
+  map<int, size_t>::iterator vertexIterator = this->degrees.find(vertex);
+  if(vertexIterator != this->degrees.end())
+  {
+    return vertexIterator->second;
+  }
+  else
+  {
+      return -1;
+  }
+}
+
+
 int Graph::GetNonZeroMinDegreeVertex()
 {
   int vertex = -1;
   size_t minDegree;
   bool firstNotSet = true;
-  for (auto const& adjacents : this->adjacencyList)
+  for (const auto& vertexDegree : this->degrees)
   {
-    size_t currentMinDegree = adjacents.size() - 1;
+    size_t currentMinDegree = vertexDegree.second;
     if (currentMinDegree > 0)
     {
       if (firstNotSet)
       {
         firstNotSet = false;
-        vertex = adjacents.front();
+        vertex = vertexDegree.first;
         minDegree = currentMinDegree;
       }
       else
       {
         if (currentMinDegree < minDegree)
         {
-          vertex = adjacents.front();
+          vertex = vertexDegree.first;
           minDegree = currentMinDegree;
         }
       }
@@ -107,20 +152,20 @@ int Graph::GetMinDegreeVertex()
   int vertex = -1;
   size_t minDegree;
   bool firstIteration = true;
-  for (auto const& adjacents : this->adjacencyList)
+  for (auto const& vertexDegree : this->degrees)
   {
+    size_t currentMinDegree = vertexDegree.second;
     if (firstIteration)
     {
       firstIteration = false;
-      vertex = adjacents.front();
-      minDegree = adjacents.size() - 1;
+      vertex = vertexDegree.first;
+      minDegree = currentMinDegree;
     }
     else
     {
-      size_t currentMinDegree = adjacents.size() - 1;
       if (currentMinDegree < minDegree)
       {
-        vertex = adjacents.front();
+        vertex = vertexDegree.first;
         minDegree = currentMinDegree;
       }
     }
@@ -139,12 +184,12 @@ pair<int, int> Graph::GetMaxDegreeVertexImpl()
 {
   int vertex = -1;
   size_t maxDegree = 0;
-  for (auto const& adjacents : this->adjacencyList)
+  for (auto const& vertexDegree : this->degrees)
   {
-    size_t currentMaxDegree = adjacents.size() - 1;
+    size_t currentMaxDegree = vertexDegree.second;
     if (currentMaxDegree > maxDegree)
     {
-      vertex = adjacents.front();
+      vertex = vertexDegree.first;
       maxDegree = currentMaxDegree;
     }
   }

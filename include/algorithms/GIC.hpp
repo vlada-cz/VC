@@ -4,16 +4,17 @@
 /*
  * Greedy Independent Cover
  *
--*/
+ */
 
-#include "algorithm.hpp"
+#include "algorithms.hpp"
 
-class GIC : public Algorithm
+class GIC : public Algorithms
 {
   public:
-    GIC() : Algorithm(){}
-    std::vector<int> Run(Graph graph);
-    void PushNeighboursToCover(std::vector<int> &cover, std::list<int> &adjacents);
+    GIC() : Algorithms(){}
+    std::vector<int> Run(Graph graph, bool removePendant, bool removeRedundant);
+    void PushNeighboursToCover(std::list<int> &adjacents);
+    std::vector<int> cover;
 };
 
 #endif

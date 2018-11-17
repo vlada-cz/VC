@@ -3,8 +3,10 @@
 #include <string>
 
 #include "graph.hpp"
+#include "algorithms.hpp"
 #include "algorithms/dummy.hpp"
 #include "algorithms/GIC.hpp"
+#include "algorithms/ME.hpp"
 #include "experiments/time.hpp"
 #include "experiments/space.hpp"
 #include "experiments/cover_size.hpp"
@@ -50,43 +52,72 @@ int main(int argc, char **argv)
 
   Graph graph;
   graph.Load(graphFilePath);
+  graph.CountDegrees();
+  int maxDegreeVertex = graph.GetMaxDegreeVertex();
+  cout << "MAX:" << graph.GetDegree(maxDegreeVertex) << endl;
+  int minDegreeVertex = graph.GetNonZeroMinDegreeVertex();
+  cout << "MIN:" << minDegreeVertex << endl;
 
-  Graph graph2 = graph;
-
-  int maxDegreeVertex = graph.GetMinDegreeVertex();
-  cout << maxDegreeVertex << endl;
-
-  list<int> adjacents = graph.GetAdjacents(maxDegreeVertex);
-  for (auto const& vertex : adjacents)
+  vector<pair<int, int>> edges = graph.GetEdges();
+  for (auto const& edge : edges)
   {
-    cout << vertex << " ";
+    cout << "(" << edge.first << ", " << edge.second << ")" << endl;
   }
-  cout << endl;
-
-  graph.RemoveVertices(adjacents);
-
-  graph.Print();
-  graph2.Print();
 
   cout << endl;
-  cout << endl;
+
 
   Dummy dummy;
   GIC gic;
+  ME me;
+  Graph origGraph = graph;
+  vector<int> cover = me.RemovePendantVertices(graph);
+  cout << "pendant" << endl;
+  for (auto const& vertex : cover)
+  {
+    cout << vertex << " ";
+  }
+  cout <<  endl;
+  vector<int> coverME = me.Run(graph, false, false);
+  for (auto const& vertex : coverME)
+  {
+    cover.push_back(vertex);
+  }
+  cout << "ME cover" << endl;
+  for (auto const& vertex : cover)
+  {
+    cout << vertex << " ";
+  }
+  cout <<  endl;
+  cover = me.RemoveRedundantVertices(origGraph, cover);
+  cout << "New cover" << endl;
+  for (auto const& vertex : cover)
+  {
+    cout << vertex << " ";
+  }
+  cout <<  endl;
+
+  /*
 
   Time timeExperiment;
   CoverSize coverSizeExperiment;
 
   cout << "Dummy" << endl;
-  timeExperiment.Run(100, dummy, graph);
-  coverSizeExperiment.Run(100, dummy, graph);
+  timeExperiment.Run(100, dummy, graph, false, false);
+  coverSizeExperiment.Run(100, dummy, graph, false, false);
   cout << endl;
 
   cout << "GCI" << endl;
-  timeExperiment.Run(100, gic, graph);
-  coverSizeExperiment.Run(100, gic, graph);
+  timeExperiment.Run(100, gic, graph, false, false);
+  coverSizeExperiment.Run(100, gic, graph, false, false);
   cout << endl;
 
+  cout << "ME" << endl;
+  //timeExperiment.Run(1, me, graph);
+  coverSizeExperiment.Run(1, me, graph, false, false);
+  cout << endl;
+
+  */
   /*
   if (param1.empty() || param2.empty())
   {

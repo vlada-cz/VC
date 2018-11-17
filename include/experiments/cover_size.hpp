@@ -7,7 +7,7 @@ class CoverSize : public Experiment
 {
   public:
     CoverSize() : Experiment(){}
-    void Run(int numberOfInterations, Algorithm &algorithm, Graph &graph);
+    void Run(int numberOfInterations, Algorithms &algorithm, Graph &graph, bool removePendant, bool removeRedundant);
     ~CoverSize(){}
 };
 
