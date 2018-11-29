@@ -64,6 +64,41 @@ def processOutput(output):
 
 
 #-----------------------------------------------------------------------#
+# Function for run subprocess with catching exceptions
+#
+# args:
+#   argsList:   List of arguments for subprocess [i, algo, ["-p", "-r"]]
+#   i.e.: argList = [30, "GIC", ["-p"]]
+#-----------------------------------------------------------------------#
+def runSubprocess(argsList) :
+    
+    args = ["valgrind", VC, "-g", "graph_" + str(argsList[0]) + ".txt", "-m", argsList[1], "-i", "1" ] + argsList[2]
+
+    #if there was a good run on subprocess
+    goodRun = False
+    error = False
+
+    #loop until good run is set to true
+    while not goodRun: 
+
+        try:
+            output = subprocess.check_output(args, stderr=subprocess.STDOUT)
+
+        except subprocess.CalledProcessError as e:
+            print("WARNING:" + e.output, file=sys.stderr)
+            error = True
+
+        if error:
+            goodRun = False
+            error = False
+        else:
+            goodRun = True
+            result = processOutput(output)
+
+    return result
+
+
+#-----------------------------------------------------------------------#
 #Main function
 #-----------------------------------------------------------------------#
 
@@ -93,32 +128,16 @@ with open(csvName, 'w+') as csvfile:
         for j,algo in enumerate(algorithms):
 
             #Normal algo
-            output = subprocess.check_output(
-                ["valgrind", VC, "-g", "graph_" + str(i) + ".txt", "-m", algo, "-i", "1" ],
-                stderr=subprocess.STDOUT)
-
-            result0 = processOutput(output)
+            result0 = runSubprocess([i, algo, []])
 
             #Algo with -p
-            output = subprocess.check_output(
-                ["valgrind", VC, "-g", "graph_" + str(i) + ".txt", "-m", algo, "-i", "1", "-p"],
-                stderr=subprocess.STDOUT)
-
-            result1 = processOutput(output)
+            result1 = runSubprocess([i, algo, ["-p"]])
 
             #Algo with -r
-            output = subprocess.check_output(
-                ["valgrind", VC, "-g", "graph_" + str(i) + ".txt", "-m", algo, "-i", "1", "-r"],
-                stderr=subprocess.STDOUT)
-
-            result2 = processOutput(output)
+            result2 = runSubprocess([i, algo, ["-r"]])
 
             #Algo with -p -r 
-            output = subprocess.check_output(
-                ["valgrind", VC, "-g", "graph_" + str(i) + ".txt", "-m", algo, "-i", "1", "-p", "-r"],
-                stderr=subprocess.STDOUT)
-
-            result3 = processOutput(output)
+            result3 = runSubprocess([i, algo, ["-p","-r"]])
 
             resultList.append(result0 + "," + result1 + "," + result2 + "," + result3)
         
