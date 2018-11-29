@@ -82,12 +82,14 @@ def runSubprocess(argsList) :
     while not goodRun: 
 
         try:
+            #try to run subprocess
             output = subprocess.check_output(args, stderr=subprocess.STDOUT)
 
         except subprocess.CalledProcessError as e:
             print("WARNING:" + e.output, file=sys.stderr)
             error = True
 
+        #if error occuers run it again
         if error:
             goodRun = False
             error = False
@@ -95,6 +97,7 @@ def runSubprocess(argsList) :
             goodRun = True
             result = processOutput(output)
 
+    #return result
     return result
 
 
@@ -139,6 +142,12 @@ with open(csvName, 'w+') as csvfile:
             #Algo with -p -r 
             result3 = runSubprocess([i, algo, ["-p","-r"]])
 
+            #create list of results from one graph
             resultList.append(result0 + "," + result1 + "," + result2 + "," + result3)
         
+        #write result into csv file
         resultFile.writerow(resultList)
+    
+
+    #return to original path
+    os.chdir(originPath)
