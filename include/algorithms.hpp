@@ -14,6 +14,7 @@ class Algorithms
     virtual ~Algorithms(){}
     std::vector<int> RemovePendantVertices(Graph &graph);
     std::vector<int> RemoveRedundantVertices(Graph &graph, std::vector<int> cover);
+    bool CheckCover(Graph origGraph, std::vector<int> cover);
 
   protected:
     bool CheckAdjacentsInCover(Graph &graph, int vertex, std::list<int> coverList);
