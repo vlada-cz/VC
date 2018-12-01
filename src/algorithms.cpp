@@ -141,6 +141,10 @@ void Algorithms::RemoveVertexFromCover(list<int> &coverList, int vertexToRemove)
  */
 bool Algorithms::CheckCover(Graph origGraph, vector<int> cover)
 {
+  if (!origGraph.HaveEdges())
+  {
+    return false;
+  }
   list<int> checkCover;
   for (auto const& vertex : cover)
   {
