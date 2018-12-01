@@ -133,3 +133,19 @@ void Algorithms::RemoveVertexFromCover(list<int> &coverList, int vertexToRemove)
     }
   }
 }
+
+
+/*
+ * Check if the vertex cover is valid cover
+ * After removing vertices from vertex cover the graph should have no edges
+ */
+bool Algorithms::CheckCover(Graph origGraph, vector<int> cover)
+{
+  list<int> checkCover;
+  for (auto const& vertex : cover)
+  {
+    checkCover.push_back(vertex);
+  }
+  origGraph.RemoveVertices(checkCover);
+  return !origGraph.HaveEdges();
+}

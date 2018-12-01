@@ -8,6 +8,7 @@
 #include "algorithms/GIC.hpp"
 #include "algorithms/MDG.hpp"
 #include "algorithms/ME.hpp"
+#include "algorithms/BF.hpp"
 #include "experiments/time_size.hpp"
 
 using namespace std;
@@ -103,6 +104,12 @@ int main(int argc, char **argv)
   {
     Dummy dummy;
     result = timeSizeExperiment.Run(numberOfInterations, dummy, graph, removePendant, removeRedundant);
+  }
+
+  if (!method.compare("BF"))
+  {
+    BF bf;
+    result = timeSizeExperiment.Run(numberOfInterations, bf, graph, removePendant, removeRedundant);
   }
 
   ofstream outStream(outFileName);

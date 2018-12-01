@@ -14,7 +14,6 @@ class Experiments
 
   protected:
     Experiments(){}
-    bool CheckCover(Graph origGraph, std::vector<int> cover);
 };
 
 

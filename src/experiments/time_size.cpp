@@ -13,7 +13,7 @@ pair<double, int> TimeSize::Run(int numberOfInterations, Algorithms &algorithm, 
   for (int i = 0; i < numberOfInterations; ++i)
   {
     vector<int> cover = algorithm.Run(graph, removePendant, removeRedundant);
-    this->CheckCover(graph, cover);
+    algorithm.CheckCover(graph, cover);
     sum += cover.size();
   }
   auto end = chrono::high_resolution_clock::now();
