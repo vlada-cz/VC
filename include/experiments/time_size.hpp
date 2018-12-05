@@ -1,3 +1,8 @@
+/*
+ authors: Jan Kohút (xkohut08), Vladimír Jeřábek (xjerab21)
+ date: 5. 12. 2018
+ */
+
 #ifndef TIME_SIZE_HPP
 #define TIME_SIZE_HPP
 

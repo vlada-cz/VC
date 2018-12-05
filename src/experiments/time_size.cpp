@@ -1,3 +1,8 @@
+/*
+ authors: Jan Kohút (xkohut08), Vladimír Jeřábek (xjerab21)
+ date: 5. 12. 2018
+ */
+
 #include "experiments/time_size.hpp"
 
 using namespace std;

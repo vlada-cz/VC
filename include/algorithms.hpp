@@ -1,6 +1,10 @@
+/*
+ authors: Jan Kohút (xkohut08), Vladimír Jeřábek (xjerab21)
+ date: 5. 12. 2018
+ */
+
 #ifndef ALGORITHMS_HPP
 #define ALGORITHMS_HPP
-
 
 #include "graph.hpp"
 #include <set>

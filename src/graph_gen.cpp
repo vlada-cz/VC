@@ -1,3 +1,8 @@
+/*
+ authors: Jan Kohút (xkohut08), Vladimír Jeřábek (xjerab21)
+ date: 5. 12. 2018
+ */
+
 #include <iostream>
 #include <random>
 #include <vector>
@@ -158,4 +163,3 @@ int main(int argc, char* argv[]) {
 	// A function to generate a random undirected graph with e edges and v vertexes.
 	GenerateRandGraphs(e, v);
 }
-
