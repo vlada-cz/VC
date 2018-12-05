@@ -11,7 +11,7 @@ cmake ..
 make
 ```
 
-Vytvoří program vc
+Vytvoří program vc.
 
 ## Spuštění
 
