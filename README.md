@@ -13,7 +13,7 @@ make
 
 Vytvoří program vc.
 
-## Spuštění
+### Spuštění
 
 ```
 ./vc -g cesta_k_souboru_grafu
