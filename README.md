@@ -21,6 +21,8 @@ Vytvoří program vc.
      -i pocet_iteraci_experimentu (kolikrát se spustí algoritmus nad grafem)
      -p remove_pendant (default false, smazání pendant vrcholů)
      -r remove_redundant (default false, smazání redundantních uzlů z pokrytí)
+     
+./vc -g ../test/graphs/graph_0.txt -m ME -i 10 -p -r
 ```
 
 Výstup se uloží do cesta_k_souboru_grafu.out, první hodnota je průměrná doba 
