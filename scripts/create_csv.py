@@ -25,9 +25,6 @@ VC = os.path.join(originPath, vcPath)
 #set of algorithm, that can be tested
 algorithms = ['GIC', 'MDG', 'ME', 'DUMMY']
  
-# print(sys.argv)
-# print(len(sys.argv))
-# sys.exit(1)1
 
 if len(sys.argv) > 1:
     vertexPath = sys.argv[1]
