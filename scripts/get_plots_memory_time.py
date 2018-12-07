@@ -1,4 +1,21 @@
-#Script for show memory and time consumption
+#-----------------------------------------------------------------------#
+#   File: get_plots_memory_time.py
+#
+#   Description:    It is script for plot (show) memory and time consumption
+#   
+#   Usage:  python3.6 get_plots_memory_time.py  pathToFolderWithCSVs (extracted from test_base)
+#   
+#   Return:     The command above will create time.pdf and memory.pdf
+#               and also show plot of time and memory
+#
+#   Dependecy:  matplotlib ! (on merlin there is no matplotlib -> pip install matplotlib -U)
+#
+#-----------------------------------------------------------------------#
+#   Authors:    Vladimir Jerabek    <xjerab21@vutbr.cz>
+#               Jan Kohut           <xkohut08@vutbr.cz>
+#   
+#   Date:       2018/11/28
+#-----------------------------------------------------------------------#
 
 import sys
 import os
@@ -127,8 +144,3 @@ plt.grid(True)
 plt.legend(loc='upper left')
 plt.savefig("memory.pdf")
 plt.show()
-
-
-
-
-

@@ -1,7 +1,23 @@
+#-----------------------------------------------------------------------#
+#   File: create_test_base.py
+#
+#   Description:    It is script for creating graphs for experminets.
+#   
+#   Usage:  python3.6 create_test_base.py 
+#   
+#   Return:     The command above will create test_base folder with
+#               a lot of graphs. (Structer depand on global vars below).
+#
+#-----------------------------------------------------------------------#
+#   Authors:    Vladimir Jerabek    <xjerab21@vutbr.cz>
+#               Jan Kohut           <xkohut08@vutbr.cz>
+#   
+#   Date:       2018/10/24
+#-----------------------------------------------------------------------#
+
 import os
 import random
 import sys
-from tqdm import tqdm
 
 #-----------------------------------------------------------------------#
 #Global params -> you cen CHANGE IT
@@ -11,7 +27,7 @@ from tqdm import tqdm
 densityNum = 10
 
 #List of vertices defines number of vertices in each density folder
-vertexList = [10, 50, 100, 200]
+vertexList = [10, 20, 30]
 
 #Graphs number defines number of graphs in one verex folder
 graphsNum = 1000
@@ -44,7 +60,7 @@ graphGen = os.path.join(originPath, graphGenPath)
 def createVertices(VL, CD, DN, GN):
 
     #create vertices folders
-    for V in tqdm(VL):
+    for V in VL:
         vertexDir = vertDir + str(V)
         if not os.path.exists(vertexDir):
             os.makedirs(vertexDir)
