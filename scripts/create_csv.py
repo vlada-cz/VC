@@ -1,18 +1,35 @@
-# Scripts for experiments
+#-----------------------------------------------------------------------#
+#   File: create_csv.py
+#
+#   Description:    It is script for creating CSV file in test_base.
+#   
+#   Usage:  python3.6 create_csv.py  pathToVertexFolder (in test_base/density_X_X)
+#
+#   Exampl: python3.6 create_csv.py test_base/density_10_1/vertex_size_10
+#
+#   
+#   Return:     The command above will create csv file in test_base/density_X_X
+#               from 150 graphs in specific density an also specific vertex folder.
+#
+#-----------------------------------------------------------------------#
+#   Authors:    Vladimir Jerabek    <xjerab21@vutbr.cz>
+#               Jan Kohut           <xkohut08@vutbr.cz>
+#   
+#   Date:       2018/11/22
+#-----------------------------------------------------------------------#
 
 import sys
 import os
 import csv
 import subprocess
 import re
-from tqdm import tqdm
 
 #-----------------------------------------------------------------------#
 #Global params -> you cen CHANGE IT
 #-----------------------------------------------------------------------#
 
 #Number of graphs which will be used for comparing (from each vertex folder)
-graphsNum = 10
+graphsNum = 150
 
 
 #relative path to vc -> program for comparing vertex cover algorithms
@@ -118,7 +135,7 @@ with open(csvName, 'w+') as csvfile:
     os.chdir(vertexPath)
 
     #loop for number of graphs, which has to be used for test
-    for i in tqdm(range(graphsNum)):
+    for i in range(graphsNum):
 
         #random graph number
         #TODO

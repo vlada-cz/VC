@@ -1,4 +1,23 @@
-#Script for show size of vertex cover using different algorithms
+#-----------------------------------------------------------------------#
+#   File: get_plots_VC_size.py
+#
+#   Description:    It is script for show size of vertex cover using different algorithms
+#                   AKA: Soutez
+#   
+#   Usage:  python3.6 get_plots_VC_size.py  pathToCsvFile (in testbase)
+#   
+#   Return:     The command above will create algo_density_X.svg 
+#               and also show plot of the SOUTEZ
+#
+#   Dependecy:  matplotlib ! (on merlin there is no matplotlib -> pip install matplotlib -U)
+#
+#-----------------------------------------------------------------------#
+#   Authors:    Vladimir Jerabek    <xjerab21@vutbr.cz>
+#               Jan Kohut           <xkohut08@vutbr.cz>
+#   
+#   Date:       2018/12/2
+#-----------------------------------------------------------------------#
+
 
 import sys
 import os
@@ -111,10 +130,5 @@ ax.set_ylim([0, resultArray.shape[2]])
 ax.set_ylabel('Počet výher algoritmu nad grafy')
 ax.set_title('Hustota: ' + density )
 fig.savefig("algo_" + density + ".svg")
-#plt.show()
+plt.show()
 
-
-
-
-####
-#
