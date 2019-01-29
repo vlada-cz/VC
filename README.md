@@ -1,10 +1,10 @@
-# Vertex Cover problém (problém vrcholového pokrytí)
+# Vertex Cover problem
 
 Implementace aproximačních algoritmů pro problém minimálního pokrytí vrcholů.
 
 ### Autoři
-Vladimír Jeřábek
-Jan Kohút
+#### Vladimír Jeřábek
+#### Jan Kohút
 
 
 ### Překlad 
