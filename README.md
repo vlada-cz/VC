@@ -1,6 +1,11 @@
-# VC
+# Vertex Cover problém (problém vrcholového pokrytí)
 
 Implementace aproximačních algoritmů pro problém minimálního pokrytí vrcholů.
+
+### Autoři
+Vladimír Jeřábek
+Jan Kohút
+
 
 ### Překlad 
 
